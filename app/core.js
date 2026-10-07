@@ -38,9 +38,11 @@
 				name: 'Dutch names',
 				setName: 'Dutch (location-based)',
 				author: '',
+				url: '',
 				summary: 'Dutch town, street and person names, chosen by location.',
 				description: 'Dutch town, street and person names. At the start of a new game, towns get a name that fits their location.',
 				renameTowns: true,
+				forceNameSet: false,   // default of the in-game option "Force this name set"
 			},
 			themes,
 			prefixes: D.prefixes.slice(),
@@ -604,6 +606,21 @@ function data()
 end
 `;
 
+
+	const TEAL_MOD_SCRIPT = String.raw`local mod = {}
+
+-- Optional mod parameter "Force this name set": makes the game use this name set for
+-- towns, streets and people, whatever the "Names" setting on the new-game screen says.
+mod.preRunFn = function(captureParams, configDict : {{string, string}}, allModParams : {string : {string : integer}}, baseConfig : BaseConfig)
+	local params = allModParams["__MODID__"]
+	if params ~= nil and params["forceNameSet"] == 1 then
+		baseConfig.nameId = "__MODID__::/names/dutch_nl.names"
+	end
+end
+
+return mod
+`;
+
 	function buildDataLua(cfg) {
 		const enabled = cfg.themes.filter((t) => t.enabled);
 		const towns = {}, gen = {};
@@ -661,14 +678,26 @@ end
 		const id = cfg.meta.modId;
 		const files = [];
 		files.push({ path: 'mod.json', text: JSON.stringify({
-			dependencies: null, incompatibilities: null, modId: id, options: null, params: null,
-			preRunScript: { fileName: '' }, postRunScript: { fileName: '' }, runScript: { fileName: '' },
+			dependencies: null, incompatibilities: null, modId: id, options: null,
+			params: [{
+				key: 'forceNameSet',
+				name: 'Force this name set',
+				tooltip: 'Use this mod\'s names for towns, streets and people, whatever the Names setting on the new-game screen says.',
+				uiType: 'ComboBox',
+				values: ['Yes', 'No'],
+				numbers: [1.0, 0.0],
+				defaultIndex: cfg.meta.forceNameSet ? 0 : 1,
+				yearFrom: 0,
+				yearTo: 0,
+			}],
+			preRunScript: { fileName: id + '::/mod.script@preRunFn' }, postRunScript: { fileName: '' }, runScript: { fileName: '' },
 			revision: 1, severityAdd: 'None', severityRemove: 'None',
 		}, null, 4) + '\n' });
+		files.push({ path: 'content/mod.script.tl', text: TEAL_MOD_SCRIPT.replace(/__MODID__/g, id) });
 		files.push({ path: '_metadata/modinfo.json', text: JSON.stringify({
 			authors: [{ name: cfg.meta.author || 'Unknown', role: 'CREATOR' }],
 			description: cfg.meta.description, name: cfg.meta.name, summary: cfg.meta.summary,
-			tags: ['Script Mod'], url: '',
+			tags: ['Script Mod'], url: cfg.meta.url || '',
 		}, null, 4) + '\n' });
 		const ref = (fn) => ({ fileName: id + '::/names/dutch.script@' + fn, params: { modId: id } });
 		files.push({ path: 'content/names/dutch_nl.names.lua', text:

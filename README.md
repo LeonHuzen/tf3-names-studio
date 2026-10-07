@@ -42,6 +42,12 @@ Use the hosted version at https://transport-fever.lemon.earth, or open `app/inde
 
 Settings are saved automatically in your browser.
 
+### Streets and people don't get Dutch names?
+
+Street and resident names come from the **name set**, which you pick *per new game*: on the new-game screen, **Names** ("the region from which the names of towns, roads and residents originate") must be set to **Dutch (location-based)**. If it stays on e.g. *Europe*, towns can still be renamed by the mod's game script, but streets and people keep the Europe names. (The game log shows which one was used: look for `nameList:` in `stdout.txt`.)
+
+Don't want to think about it? The mod has an option **Force this name set** (mod settings, off by default, experimental) that makes the game use this name set whatever the Names setting says.
+
 ### How the location logic works
 
 For every town, on the first tick of a new game, the game script checks (in this default order):
@@ -62,6 +68,25 @@ For every town, on the first tick of a new game, the game script checks (in this
 - Unofficial and not affiliated with Urban Games.
 
 To check what happened in a game, search `stdout.txt` for `[dutch_names]`; every renamed town gets a line like `Aldeboarn -> Harlingen (kust, sea at 550 m)`.
+
+## Publish a mod to the in-game Mod Hub (mod.io)
+
+Following the [official publishing guide](https://wiki.transportfever3.com/doku.php?id=modding:general:publishing):
+
+1. Put the mod folder in your **`staging_area`** (next to `mods`: `.../userdata/<id>/3493540/local/staging_area/`) and restart the game. Add a 1920×1080 cover as `_metadata/0.png` first (this repo's mod has one; `tools/make_cover.py` generated it).
+2. In the game open **Mod Hub → My Mods**, select the mod and fill in the name, tags, cover/gallery images, visibility and a changelog.
+3. Click **Upload**. The dialog must say *"A new mod will be created on mod.io"*.
+4. **Updating:** raise `revision` in `mod.json`, keep `_metadata/mod.io_fileid.txt` (created by the first upload, commit it to your repo), and only upload when the dialog says *"The existing mod on mod.io will be updated"*. If it says a new mod will be created, cancel: you would create a duplicate.
+
+Rules: only upload content you have the rights to, it must be free, and follow the mod.io terms and Urban Games' guidelines. Title and description on mod.io are overwritten from `_metadata/modinfo.json` on upload.
+
+## Development
+
+```bash
+node tools/build_mod.js                  # regenerate mod/dutch_names_1 from the app defaults
+python3 tools/make_cover.py cover.png    # regenerate the Mod Hub cover (needs Pillow)
+lua5.4 tools/test_mod.lua mod/dutch_names_1   # offline smoke test with a mocked game API
+```
 
 ## Host Names Studio yourself (Docker / Coolify)
 

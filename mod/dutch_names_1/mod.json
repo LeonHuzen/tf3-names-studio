@@ -3,9 +3,27 @@
     "incompatibilities": null,
     "modId": "dutch_names_1",
     "options": null,
-    "params": null,
+    "params": [
+        {
+            "key": "forceNameSet",
+            "name": "Force this name set",
+            "tooltip": "Use this mod's names for towns, streets and people, whatever the Names setting on the new-game screen says.",
+            "uiType": "ComboBox",
+            "values": [
+                "Yes",
+                "No"
+            ],
+            "numbers": [
+                1,
+                0
+            ],
+            "defaultIndex": 1,
+            "yearFrom": 0,
+            "yearTo": 0
+        }
+    ],
     "preRunScript": {
-        "fileName": ""
+        "fileName": "dutch_names_1::/mod.script@preRunFn"
     },
     "postRunScript": {
         "fileName": ""
