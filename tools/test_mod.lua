@@ -1,7 +1,7 @@
 -- Offline smoke test of the generated mod with a mocked game API.
 -- Usage: lua5.4 tools/test_mod.lua mod/dutch_names_1
 local base = (arg[1] or "mod/dutch_names_1") .. "/content"
-local MOD = "dutch_names_1"
+local MOD = arg[2] or "dutch_names_1"
 local real_require = require
 function require(n)
 	local p = n:match("^" .. MOD .. "::/(.+)$")
