@@ -13,4 +13,7 @@ for (const f of C.buildModFiles(cfg)) {
 	fs.mkdirSync(path.dirname(p), { recursive: true });
 	fs.writeFileSync(p, f.text);
 }
+// regression check: the game refuses mod.json files whose parameter numbers are not doubles
+const modJson = fs.readFileSync(path.join(root, cfg.meta.modId, 'mod.json'), 'utf8');
+if (!/"numbers": \[\s*1\.0,\s*0\.0\s*\]/.test(modJson)) { console.error('mod.json: numbers must be written as 1.0 and 0.0'); process.exit(1); }
 console.log('mod written to', root);

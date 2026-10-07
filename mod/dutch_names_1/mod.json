@@ -14,8 +14,8 @@
                 "No"
             ],
             "numbers": [
-                1,
-                0
+                1.0,
+                0.0
             ],
             "defaultIndex": 1,
             "yearFrom": 0,

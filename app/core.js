@@ -685,14 +685,14 @@ return mod
 				tooltip: 'Use this mod\'s names for towns, streets and people, whatever the Names setting on the new-game screen says.',
 				uiType: 'ComboBox',
 				values: ['Yes', 'No'],
-				numbers: [1.0, 0.0],
+				numbers: ['__DOUBLE_1__', '__DOUBLE_0__'],   // the game requires real doubles (1.0), JSON.stringify would write 1
 				defaultIndex: cfg.meta.forceNameSet ? 0 : 1,
 				yearFrom: 0,
 				yearTo: 0,
 			}],
 			preRunScript: { fileName: id + '::/mod.script@preRunFn' }, postRunScript: { fileName: '' }, runScript: { fileName: '' },
 			revision: 1, severityAdd: 'None', severityRemove: 'None',
-		}, null, 4) + '\n' });
+		}, null, 4).replace('"__DOUBLE_1__"', '1.0').replace('"__DOUBLE_0__"', '0.0') + '\n' });
 		files.push({ path: 'content/mod.script.tl', text: TEAL_MOD_SCRIPT.replace(/__MODID__/g, id) });
 		files.push({ path: '_metadata/modinfo.json', text: JSON.stringify({
 			authors: [{ name: cfg.meta.author || 'Unknown', role: 'CREATOR' }],
