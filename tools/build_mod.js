@@ -7,8 +7,8 @@ const cfg = C.makeDefaults(window.DEFAULT_DATA);
 cfg.meta.author = 'LeonHuzen';
 cfg.meta.url = 'https://transport-fever.lemon.earth';
 cfg.meta.revision = 2;
-// tags as chosen on mod.io (the Mod Hub only knows its own tag list, "Names" does not exist there)
-cfg.meta.tags = 'Town Building, Other Asset, Script Mod, Localization';
+// tags as on mod.io (without 'Localization': the game may treat such mods as language packs and hide them from the new-game mod list; 'Names' does not exist there)
+cfg.meta.tags = 'Town Building, Other Asset, Script Mod';
 const root = path.join(__dirname, '..', 'mod');
 fs.rmSync(root, { recursive: true, force: true });
 for (const f of C.buildModFiles(cfg)) {
