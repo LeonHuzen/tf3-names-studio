@@ -436,7 +436,7 @@
 					h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: m.renameTowns, onchange: (e) => { m.renameTowns = e.target.checked; save(); refresh(); } }), 'Rename towns by location at game start (game script)'),
 					h('p', { class: 'muted' }, 'Off = name set only; towns then get random names from all themes.'),
 					h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: m.forceNameSet, onchange: (e) => { m.forceNameSet = e.target.checked; save(); } }), 'Use this name set by default (in-game option "Force this name set")'),
-					h('p', { class: 'muted' }, 'The mod always gets this option in its settings. Turned on, the game uses your name set for towns, streets and people without having to pick it under "Names" on the new-game screen. Experimental.')),
+					h('p', { class: 'muted' }, 'The mod always gets this option in its settings. Turned on, the game uses your name set for towns, streets and people without having to pick it under "Names" on the new-game screen.')),
 				h('div', {},
 					h('div', { class: 'card' }, h('h3', {}, 'Check'), issuesBox, h('div', { class: 'row', style: 'margin-top:10px' }, zipBtn,
 						btn('Save config (JSON)', () => { download(new Blob([JSON.stringify({ state }, null, 2)], { type: 'application/json' }), 'names-studio-config.json'); }),

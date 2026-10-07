@@ -32,6 +32,7 @@ end
 function data()
 return {
 	townsFn = function(captureParams, params)
+		if math.random(50) == 1 then print("[dutch_names] townsFn called, num = " .. tostring(params.num)) end
 		local d = loadData(captureParams)
 		local pool, themes, set = {}, d.allTownThemes(), {}
 		for _, theme in ipairs(themes) do
@@ -45,6 +46,7 @@ return {
 	end,
 
 	streetsFn = function(captureParams, params)
+		if math.random(50) == 1 then print("[dutch_names] streetsFn called, num = " .. tostring(params.num)) end
 		local d = loadData(captureParams)
 		local pool, set = {}, {}
 		for _, n in ipairs(d.streets) do pool[#pool + 1] = n; set[n] = true end
@@ -61,6 +63,7 @@ return {
 	end,
 
 	personFn = function(captureParams, params)
+		if math.random(500) == 1 then print("[dutch_names] personFn called, isMale = " .. tostring(params.isMale)) end
 		local d = loadData(captureParams)
 		local first = params.isMale and d.firstMale or d.firstFemale
 		if d.cfg.lastNameFirst then

@@ -17,7 +17,7 @@
                 1.0,
                 0.0
             ],
-            "defaultIndex": 1,
+            "defaultIndex": 0,
             "yearFrom": 0,
             "yearTo": 0
         }
@@ -31,7 +31,7 @@
     "runScript": {
         "fileName": ""
     },
-    "revision": 2,
+    "revision": 3,
     "severityAdd": "None",
     "severityRemove": "None"
 }

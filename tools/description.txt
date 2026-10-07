@@ -3,8 +3,7 @@ Dutch town, street and resident names for Transport Fever 3. Town names follow t
 
 HOW TO USE
 1. Enable this mod (tip: search for "Dutch" in the Mods list).
-2. Start a NEW game and set Names to "Dutch (location-based)" on the new-game screen. This is what makes streets and residents Dutch. Town names are changed by the mod either way.
-3. Optional: in the mod settings set "Force this name set" to Yes. The game then uses the Dutch names for towns, streets and residents whatever the Names setting says (experimental).
+2. Start a NEW game. By default the mod makes the game use the Dutch names for towns, streets and residents (mod setting "Force this name set" = Yes). Prefer another name set? Set it to No and pick Names yourself on the new-game screen: choose "Dutch (location-based)" to get Dutch streets and residents.
 
 HOW TOWNS ARE NAMED
 On the first tick of a new game every town is checked in this order: industry within 600 m (mining, timber, farmland, industry or coast names depending on the industry type); water within 1500 m (sea, lake or river, based on how wide the water is); industry within 1500 m; a town on higher ground (hills); otherwise countryside (farmland, polder or forest). 15% of the towns get a random theme for variety. The log (stdout.txt) shows what happened to each town, search for "[dutch_names]".
@@ -25,8 +24,7 @@ Nederlandse plaats-, straat- en persoonsnamen voor Transport Fever 3. Plaatsname
 
 GEBRUIK
 1. Zet deze mod aan (tip: zoek op "Dutch" in de modlijst).
-2. Start een NIEUW spel en zet bij Names (namen) de namenset op "Dutch (location-based)". Daardoor krijgen ook straten en inwoners Nederlandse namen. Plaatsnamen past de mod hoe dan ook aan.
-3. Optioneel: zet in de modinstellingen "Force this name set" op Yes. Het spel gebruikt dan de Nederlandse namen voor plaatsen, straten en inwoners, wat er ook bij Names staat (experimenteel).
+2. Start een NIEUW spel. Standaard laat de mod het spel de Nederlandse namen gebruiken voor plaatsen, straten en inwoners (modinstelling "Force this name set" = Yes). Liever een andere namenset? Zet de instelling op No en kies zelf bij Names op het nieuwe-spel-scherm: kies "Dutch (location-based)" voor Nederlandse straten en inwoners.
 
 HOE PLAATSEN WORDEN BENOEMD
 Bij de eerste tick van een nieuw spel wordt elke plaats in deze volgorde gecontroleerd: industrie binnen 600 m (mijn-, hout-, landbouw-, industrie- of kustnamen, afhankelijk van het type industrie); water binnen 1500 m (zee, meer of rivier, afhankelijk van hoe breed het water is); industrie binnen 1500 m; een plaats op hoger gelegen grond (heuvels); anders platteland (landbouw, polder of bos). 15% van de plaatsen krijgt voor de afwisseling een willekeurig thema. In het logbestand (stdout.txt) zie je wat er met elke plaats is gebeurd, zoek op "[dutch_names]".

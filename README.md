@@ -42,11 +42,9 @@ Use the hosted version at https://transport-fever.lemon.earth, or open `app/inde
 
 Settings are saved automatically in your browser.
 
-### Streets and people don't get Dutch names?
+### Names for streets and people
 
-Street and resident names come from the **name set**, which you pick *per new game*: on the new-game screen, **Names** ("the region from which the names of towns, roads and residents originate") must be set to **Dutch (location-based)**. If it stays on e.g. *Europe*, towns can still be renamed by the mod's game script, but streets and people keep the Europe names. (The game log shows which one was used: look for `nameList:` in `stdout.txt`.)
-
-Don't want to think about it? The mod has an option **Force this name set** (mod settings, off by default, experimental) that makes the game use this name set whatever the Names setting says.
+Street and resident names come from the **name set**, which the game normally picks per new game under **Names** on the new-game screen. To save you that step, the mod has a setting **Force this name set** (on by default): the game then uses the Dutch names for towns, streets and residents, whatever **Names** says. Turn it off to choose a name set yourself; select **Dutch (location-based)** to get Dutch streets and residents. The log (`stdout.txt`) shows what happened: look for `[dutch_names] preRun:`.
 
 ### How the location logic works
 
@@ -64,7 +62,7 @@ For every town, on the first tick of a new game, the game script checks (in this
 
 - The game's names API passes **no location** to name scripts, so *street and person names are not location-based*. Only town names are, via a game script that renames towns at the start of a new game.
 - The script runs **once per game** (on the first tick). Enabling the mod in an existing save renames its towns once.
-- The location logic uses the scripting API found in the game's type definitions (`api.engine.terrain.isOnWater`, `getHeightAt`, `api.cmd.makeEntitySetNameCmd`). The generated Lua is tested offline against a mocked API; please **report anything odd in-game** by opening an issue (include the `[dutch_names]` lines from `stdout.txt`).
+- The location logic uses the scripting API found in the game's type definitions (`api.engine.terrain.isOnWater`, `getHeightAt`, `api.cmd.makeEntitySetNameCmd`). The generated Lua is tested offline against a mocked API and verified in-game on macOS (Steam); please **report anything odd** by opening an issue (include the `[dutch_names]` lines from `stdout.txt`).
 - Unofficial and not affiliated with Urban Games.
 
 To check what happened in a game, search `stdout.txt` for `[dutch_names]`; every renamed town gets a line like `Aldeboarn -> Harlingen (kust, sea at 550 m)`.
