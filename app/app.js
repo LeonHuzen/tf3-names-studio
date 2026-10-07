@@ -17,6 +17,7 @@
 		s.people = Object.assign({}, base.people, saved.people);
 		// migrate Dutch default labels saved by an earlier (Dutch) version of the app
 		const OLD = { kust: 'Kust (zee)', rivier: 'Rivier', meer: 'Meer', polder: 'Polder', heuvel: 'Heuvel', bos: 'Bos & heide', industrie: 'Industrie', mijn: 'Mijn & groeve', hout: 'Hout & papier', landbouw: 'Landbouw', stad: 'Grote steden' };
+		if (typeof s.meta.description === 'string' && s.meta.description.length < 200 && /^Dutch town, street and person names/.test(s.meta.description)) s.meta.description = base.meta.description;
 		const OLDMETA = { name: 'Nederlandse namen', setName: 'Nederlands (locatiegebonden)', summary: 'Nederlandse stads-, straat- en persoonsnamen, gekozen op locatie.', description: 'Nederlandse plaats-, straat- en persoonsnamen. Steden krijgen bij een nieuw spel een naam die past bij hun locatie.' };
 		if (s.meta.name === 'Dutch names') s.meta.name = base.meta.name; // earlier default
 		if (!saved.meta || saved.meta.tags === undefined) s.meta.tags = base.meta.tags;
@@ -430,7 +431,7 @@
 					field('Tags (comma-separated)', text(m, 'tags'), 'Written to modinfo.json. On the Mod Hub you also tick the official mod.io tags under My Mods.'),
 					field('Website URL (shown in the mod\'s info)', text(m, 'url'), 'Optional. Where players can find this tool or download page.'),
 					field('Summary (max. 100 characters)', text(m, 'summary', { after: refresh })),
-					field('Description', h('textarea', { rows: 3, oninput: (e) => { m.description = e.target.value; save(); } }, m.description)),
+					field('Description', h('textarea', { rows: 12, oninput: (e) => { m.description = e.target.value; save(); } }, m.description)),
 					h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: m.renameTowns, onchange: (e) => { m.renameTowns = e.target.checked; save(); refresh(); } }), 'Rename towns by location at game start (game script)'),
 					h('p', { class: 'muted' }, 'Off = name set only; towns then get random names from all themes.'),
 					h('label', { class: 'row' }, h('input', { type: 'checkbox', checked: m.forceNameSet, onchange: (e) => { m.forceNameSet = e.target.checked; save(); } }), 'Use this name set by default (in-game option "Force this name set")'),

@@ -1,0 +1,41 @@
+DUTCH NAMES
+Dutch town, street and resident names for Transport Fever 3. Town names follow the landscape: coastal towns get names like Zandvoort or Westkapelle, river towns get Zaltbommel or Culemborg, towns next to a mine or factory get industrial names (Heerlen, Geleen), and so on. Over 600 real Dutch place names plus a name generator, over 100 street names and Dutch first and last names ("Jan de Vries", "Fleur van den Berg").
+
+HOW TO USE
+1. Enable this mod.
+2. Start a NEW game and set Names to "Dutch (location-based)" on the new-game screen. This is what makes streets and residents Dutch. Town names are changed by the mod either way.
+3. Optional: in the mod settings set "Force this name set" to Yes. The game then uses the Dutch names for towns, streets and residents whatever the Names setting says (experimental).
+
+HOW TOWNS ARE NAMED
+On the first tick of a new game every town is checked in this order: industry within 600 m (mining, timber, farmland, industry or coast names depending on the industry type); water within 1500 m (sea, lake or river, based on how wide the water is); industry within 1500 m; a town on higher ground (hills); otherwise countryside (farmland, polder or forest). 15% of the towns get a random theme for variety. The log (stdout.txt) shows what happened to each town, search for "[dutch_names]".
+
+GOOD TO KNOW
+- Streets and residents are not location-based: the game does not pass a location to those name scripts.
+- Towns are renamed once, when a new game starts. Enabling the mod in an existing save renames its towns once.
+- Unofficial, not affiliated with Urban Games.
+
+MAKE YOUR OWN
+This mod was made with Names Studio, a free web app: https://transport-fever.lemon.earth . Edit the name lists and the rules, invent new names, and export your own mod (for another country, region or theme). Source code: https://github.com/LeonHuzen/tf3-names-studio
+Found a problem? Please open an issue on GitHub and paste the "[dutch_names]" lines from stdout.txt.
+
+----------------------------------------
+
+NEDERLANDSE NAMEN
+Nederlandse plaats-, straat- en persoonsnamen voor Transport Fever 3. Plaatsnamen passen bij het landschap: kuststeden krijgen namen als Zandvoort of Westkapelle, rivierstadjes Zaltbommel of Culemborg, steden bij een mijn of fabriek industriële namen (Heerlen, Geleen), enzovoort. Ruim 600 echte Nederlandse plaatsnamen plus een naamgenerator, ruim 100 straatnamen en Nederlandse voor- en achternamen ("Jan de Vries", "Fleur van den Berg").
+
+GEBRUIK
+1. Zet deze mod aan.
+2. Start een NIEUW spel en zet bij Names (namen) de namenset op "Dutch (location-based)". Daardoor krijgen ook straten en inwoners Nederlandse namen. Plaatsnamen past de mod hoe dan ook aan.
+3. Optioneel: zet in de modinstellingen "Force this name set" op Yes. Het spel gebruikt dan de Nederlandse namen voor plaatsen, straten en inwoners, wat er ook bij Names staat (experimenteel).
+
+HOE PLAATSEN WORDEN BENOEMD
+Bij de eerste tick van een nieuw spel wordt elke plaats in deze volgorde gecontroleerd: industrie binnen 600 m (mijn-, hout-, landbouw-, industrie- of kustnamen, afhankelijk van het type industrie); water binnen 1500 m (zee, meer of rivier, afhankelijk van hoe breed het water is); industrie binnen 1500 m; een plaats op hoger gelegen grond (heuvels); anders platteland (landbouw, polder of bos). 15% van de plaatsen krijgt voor de afwisseling een willekeurig thema. In het logbestand (stdout.txt) zie je wat er met elke plaats is gebeurd, zoek op "[dutch_names]".
+
+GOED OM TE WETEN
+- Straten en inwoners zijn niet locatiegebonden: het spel geeft geen locatie door aan die naamscripts.
+- Plaatsen worden één keer hernoemd, bij de start van een nieuw spel. Zet je de mod aan in een bestaand spel, dan worden de plaatsen eenmalig hernoemd.
+- Onofficieel, niet gelieerd aan Urban Games.
+
+MAAK ZELF EEN MOD
+Deze mod is gemaakt met Names Studio, een gratis webapp: https://transport-fever.lemon.earth . Pas de namenlijsten en regels aan, verzin nieuwe namen en exporteer je eigen mod (voor een ander land, andere streek of ander thema). Broncode: https://github.com/LeonHuzen/tf3-names-studio
+Een probleem gevonden? Open een issue op GitHub en plak de regels met "[dutch_names]" uit stdout.txt.
