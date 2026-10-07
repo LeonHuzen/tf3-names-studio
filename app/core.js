@@ -40,6 +40,8 @@
 				author: '',
 				url: '',
 				summary: 'Dutch town, street and person names, chosen by location.',
+				coverTagline: 'Town names that fit the landscape',
+				coverMode: 'auto',        // auto | custom | none
 				description: 'Dutch town, street and person names. At the start of a new game, towns get a name that fits their location.',
 				renameTowns: true,
 				forceNameSet: false,   // default of the in-game option "Force this name set"
@@ -674,7 +676,7 @@ return mod
 	}
 
 	/* Builds all mod files: [{ path, text }] */
-	function buildModFiles(cfg) {
+	function buildModFiles(cfg, assets) {
 		const id = cfg.meta.modId;
 		const files = [];
 		files.push({ path: 'mod.json', text: JSON.stringify({
@@ -714,7 +716,8 @@ return mod
 				'function data()\n\treturn {\n\t\tupdateScript = {\n\t\t\tfileName = "' + id + '::/dutch_names.script@update",\n\t\t},\n\t}\nend\n' });
 			files.push({ path: 'content/dutch_names.script.lua', text: buildGameScriptLua(cfg) });
 		}
-		return files.map((f) => ({ path: id + '/' + f.path, text: f.text }));
+		if (assets && assets.coverPng) files.push({ path: '_metadata/0.png', bytes: assets.coverPng });
+		return files.map((f) => Object.assign({}, f, { path: id + '/' + f.path }));
 	}
 
 	/* ------------------------------------------------------------------ */
@@ -745,7 +748,7 @@ return mod
 		const u16 = (n) => [n & 255, (n >> 8) & 255];
 		const u32 = (n) => [n & 255, (n >> 8) & 255, (n >> 16) & 255, (n >>> 24) & 255];
 		files.forEach((f) => {
-			const name = enc.encode(f.path), data = enc.encode(f.text), crc = crc32(data);
+			const name = enc.encode(f.path), data = f.bytes || enc.encode(f.text), crc = crc32(data);
 			const local = new Uint8Array([
 				0x50, 0x4b, 3, 4, ...u16(20), ...u16(0x0800), ...u16(0), ...u16(dosTime), ...u16(dosDate),
 				...u32(crc), ...u32(data.length), ...u32(data.length), ...u16(name.length), ...u16(0),

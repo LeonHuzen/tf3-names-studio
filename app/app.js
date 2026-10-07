@@ -400,12 +400,15 @@
 				: [h('div', { class: 'issue ok' }, '✔ Everything looks good.')]));
 			zipBtn.disabled = issues.some((i) => i.level === 'error');
 			const files = C.buildModFiles(state);
-			filesBox.replaceChildren(h('table', {}, files.map((f) => h('tr', {}, h('td', {}, h('code', {}, f.path)), h('td', { class: 'muted' }, Math.max(1, Math.round(new Blob([f.text]).size / 1024)) + ' kB')))));
+			if (m.coverMode !== 'none') files.push({ path: m.modId + '/_metadata/0.png', text: '', bytes: new Uint8Array(1024 * 600) });
+			filesBox.replaceChildren(h('table', {}, files.map((f) => h('tr', {}, h('td', {}, h('code', {}, f.path)), h('td', { class: 'muted' }, (f.bytes ? '~600' : Math.max(1, Math.round(new Blob([f.text]).size / 1024))) + ' kB')))));
 			const mods = '"$HOME/Library/Application Support/Steam/userdata/' + (extra.steamId || '<your-id>') + '/3493540/local/mods/"';
 			cmdBox.textContent = 'unzip -o ~/Downloads/' + m.modId + '.zip -d ' + mods;
 		};
-		const zipBtn = btn('Download mod (.zip)', () => {
-			download(C.buildZip(C.buildModFiles(state)), m.modId + '.zip'); toast('Zip downloaded');
+		const zipBtn = btn('Download mod (.zip)', async () => {
+			let assets = {};
+			try { if (m.coverMode !== 'none') assets = { coverPng: await coverBytes() }; } catch (e) { toast('Could not create the cover image; exporting without it'); }
+			download(C.buildZip(C.buildModFiles(state, assets)), m.modId + '.zip'); toast('Zip downloaded');
 			showThanks(m);
 		}, 'primary');
 
@@ -443,6 +446,23 @@
 				h('div', { class: 'row' }, h('label', { class: 'muted' }, 'Steam user ID ', h('input', { type: 'text', style: 'width:140px', placeholder: 'e.g. 12345678', value: extra.steamId, oninput: (e) => { extra.steamId = e.target.value.trim(); save(); refresh(); } })),
 					h('span', { class: 'muted' }, '(the folder under Steam/userdata/)')),
 				cmdBox, btn('Copy command', () => { navigator.clipboard.writeText(cmdBox.textContent).then(() => toast('Copied'), () => toast('Copy failed')); }, 'small')),
+			(() => {
+				const canvas = h('canvas', { style: 'width:100%;max-width:520px;border-radius:8px;border:1px solid var(--border);display:block' });
+				const draw = () => { renderCover(canvas); };
+				const modeSel = h('select', { style: 'width:auto', onchange: (e) => { m.coverMode = e.target.value; save(); draw(); refresh(); } },
+					[['auto', 'Generated cover'], ['custom', 'My own image'], ['none', 'No cover']].map(([v, l]) => h('option', { value: v, selected: m.coverMode === v }, l)));
+				const pick = h('input', { type: 'file', accept: 'image/png,image/jpeg,image/webp', style: 'display:none', onchange: (e) => {
+					const f = e.target.files[0]; if (!f) return;
+					loadCustomCover(f, (ok) => { if (ok) { m.coverMode = 'custom'; modeSel.value = 'custom'; save(); draw(); refresh(); } else toast('Could not read that image'); });
+				} });
+				draw();
+				return h('div', { class: 'card' }, h('h3', {}, 'Cover image (Mod Hub)'),
+					h('p', { class: 'muted', style: 'margin:0 0 8px' }, 'Saved as _metadata/0.png at 1920×1080 inside the zip. Uploading your own image (screenshot, logo) crops it to fit; it is not stored in your browser.'),
+					h('div', { class: 'cols', style: 'align-items:start' }, canvas,
+						h('div', {}, field('Cover', modeSel),
+							field('Tagline (generated cover)', text(m, 'coverTagline', { after: draw })),
+							h('div', { class: 'row' }, btn('Choose image…', () => pick.click(), 'small'), pick))));
+			})(),
 			h('div', { class: 'card' }, h('h3', {}, 'Publish to the in-game Mod Hub (mod.io)'),
 				h('ol', { style: 'margin:0 0 8px;padding-left:20px' },
 					h('li', {}, 'Add your own cover as ', h('code', {}, '_metadata/0.png'), ' (PNG, 1920×1080) to the unzipped folder.'),
@@ -455,6 +475,70 @@
 				btn('Reset', () => { if (confirm('All your changes will be lost. Continue?')) { state = freshState(); selTheme = state.themes[0].id; save(); render(); } }, 'danger small')));
 		refresh();
 		return root;
+	}
+
+
+	/* ---------------- Cover image (Mod Hub, _metadata/0.png) ---------------- */
+	const COVER_W = 1920, COVER_H = 1080;
+	let customCover = null; // canvas with the user's own image (kept in memory only)
+
+	function drawAutoCover(ctx) {
+		const g = ctx.createLinearGradient(0, 0, 0, COVER_H);
+		g.addColorStop(0, '#182442'); g.addColorStop(0.55, '#5a3328'); g.addColorStop(1, '#c45218');
+		ctx.fillStyle = g; ctx.fillRect(0, 0, COVER_W, COVER_H);
+		ctx.fillStyle = 'rgba(14,22,40,.8)';
+		ctx.beginPath(); ctx.moveTo(0, COVER_H); ctx.lineTo(0, 800); ctx.lineTo(300, 760); ctx.lineTo(620, 820); ctx.lineTo(960, 740);
+		ctx.lineTo(1320, 800); ctx.lineTo(1650, 720); ctx.lineTo(COVER_W, 780); ctx.lineTo(COVER_W, COVER_H); ctx.closePath(); ctx.fill();
+		ctx.fillStyle = 'rgba(10,16,30,.92)'; ctx.fillRect(0, 900, COVER_W, COVER_H - 900);
+		const font = (px, w) => (w || 400) + ' ' + px + 'px "Helvetica Neue", Helvetica, Arial, sans-serif';
+		ctx.textBaseline = 'alphabetic';
+		let title = state.meta.name || 'My names', size = 190;
+		ctx.font = font(size, 700);
+		while (ctx.measureText(title).width > COVER_W - 240 && size > 60) { size -= 6; ctx.font = font(size, 700); }
+		ctx.fillStyle = '#fff'; ctx.fillText(title, 120, 150 + size * 0.8);
+		ctx.font = font(70); ctx.fillStyle = '#ffe2be'; ctx.fillText(state.meta.coverTagline || '', 126, 430);
+		const enabled = state.themes.filter((x) => x.enabled);
+		ctx.font = font(44); ctx.fillStyle = 'rgba(255,255,255,.82)';
+		ctx.fillText(enabled.slice(0, 6).map((x) => x.label.split(' (')[0]).join('  ·  '), 126, 510);
+		const chips = enabled.filter((x) => x.curated.length).slice(0, 8).map((x) => x.curated[0]);
+		ctx.font = font(46, 700);
+		let x = 120, y = 600;
+		chips.forEach((name, i) => {
+			const w = ctx.measureText(name).width + 70;
+			if (x + w > COVER_W - 120) { x = 120; y += 100; }
+			ctx.fillStyle = 'rgba(255,255,255,.92)';
+			ctx.beginPath(); ctx.roundRect(x, y, w, 80, 40); ctx.fill();
+			ctx.fillStyle = '#1e2846'; ctx.fillText(name, x + 35, y + 56);
+			x += w + 36;
+		});
+		ctx.font = font(40); ctx.fillStyle = 'rgba(255,255,255,.75)';
+		ctx.fillText('Made with Names Studio', 120, 990);
+	}
+
+	function renderCover(canvas) {
+		canvas.width = COVER_W; canvas.height = COVER_H;
+		const ctx = canvas.getContext('2d');
+		if (state.meta.coverMode === 'custom' && customCover) ctx.drawImage(customCover, 0, 0);
+		else drawAutoCover(ctx);
+	}
+
+	function coverBytes() {
+		return new Promise((resolve, reject) => {
+			const c = document.createElement('canvas'); renderCover(c);
+			c.toBlob((b) => (b ? b.arrayBuffer().then((ab) => resolve(new Uint8Array(ab))) : reject(new Error('cover failed'))), 'image/png');
+		});
+	}
+
+	function loadCustomCover(file, done) {
+		const img = new Image(), url = URL.createObjectURL(file);
+		img.onload = () => {
+			const c = document.createElement('canvas'); c.width = COVER_W; c.height = COVER_H;
+			const k = Math.max(COVER_W / img.width, COVER_H / img.height), w = img.width * k, hh = img.height * k;
+			c.getContext('2d').drawImage(img, (COVER_W - w) / 2, (COVER_H - hh) / 2, w, hh); // cover-fit, centred
+			URL.revokeObjectURL(url); customCover = c; done(true);
+		};
+		img.onerror = () => { URL.revokeObjectURL(url); done(false); };
+		img.src = url;
 	}
 
 	/* ---------------- Support banner & thank-you dialog ---------------- */
