@@ -429,6 +429,7 @@
 					field('Name of the name set in the game', text(m, 'setName')),
 					field('Author', text(m, 'author')),
 					field('Tags (comma-separated)', text(m, 'tags'), 'Written to modinfo.json. On the Mod Hub you also tick the official mod.io tags under My Mods.'),
+					field('Revision', num(m, 'revision', { min: 1, step: 1 }), 'Raise this for every update you upload to the Mod Hub.'),
 					field('Website URL (shown in the mod\'s info)', text(m, 'url'), 'Optional. Where players can find this tool or download page.'),
 					field('Summary (max. 100 characters)', text(m, 'summary', { after: refresh })),
 					field('Description', h('textarea', { rows: 12, oninput: (e) => { m.description = e.target.value; save(); } }, m.description)),

@@ -6,6 +6,9 @@ const fs = require('fs'), path = require('path');
 const cfg = C.makeDefaults(window.DEFAULT_DATA);
 cfg.meta.author = 'LeonHuzen';
 cfg.meta.url = 'https://transport-fever.lemon.earth';
+cfg.meta.revision = 2;
+// tags as chosen on mod.io (the Mod Hub only knows its own tag list, "Names" does not exist there)
+cfg.meta.tags = 'Town Building, Other Asset, Script Mod, Localization';
 const root = path.join(__dirname, '..', 'mod');
 fs.rmSync(root, { recursive: true, force: true });
 for (const f of C.buildModFiles(cfg)) {
@@ -13,6 +16,9 @@ for (const f of C.buildModFiles(cfg)) {
 	fs.mkdirSync(path.dirname(p), { recursive: true });
 	fs.writeFileSync(p, f.text);
 }
+// keep the link to the existing mod on mod.io, otherwise an upload would create a duplicate
+const fileId = path.join(__dirname, 'mod.io_fileid.txt');
+if (fs.existsSync(fileId)) fs.copyFileSync(fileId, path.join(root, cfg.meta.modId, '_metadata', 'mod.io_fileid.txt'));
 // regression check: the game refuses mod.json files whose parameter numbers are not doubles
 const modJson = fs.readFileSync(path.join(root, cfg.meta.modId, 'mod.json'), 'utf8');
 if (!/"numbers": \[\s*1\.0,\s*0\.0\s*\]/.test(modJson)) { console.error('mod.json: numbers must be written as 1.0 and 0.0'); process.exit(1); }

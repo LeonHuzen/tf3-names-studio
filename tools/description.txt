@@ -2,7 +2,7 @@ DUTCH NAMES
 Dutch town, street and resident names for Transport Fever 3. Town names follow the landscape: coastal towns get names like Zandvoort or Westkapelle, river towns get Zaltbommel or Culemborg, towns next to a mine or factory get industrial names (Heerlen, Geleen), and so on. Over 600 real Dutch place names plus a name generator, over 100 street names and Dutch first and last names ("Jan de Vries", "Fleur van den Berg").
 
 HOW TO USE
-1. Enable this mod.
+1. Enable this mod (tip: search for "Dutch" in the Mods list).
 2. Start a NEW game and set Names to "Dutch (location-based)" on the new-game screen. This is what makes streets and residents Dutch. Town names are changed by the mod either way.
 3. Optional: in the mod settings set "Force this name set" to Yes. The game then uses the Dutch names for towns, streets and residents whatever the Names setting says (experimental).
 
@@ -24,7 +24,7 @@ NEDERLANDSE NAMEN
 Nederlandse plaats-, straat- en persoonsnamen voor Transport Fever 3. Plaatsnamen passen bij het landschap: kuststeden krijgen namen als Zandvoort of Westkapelle, rivierstadjes Zaltbommel of Culemborg, steden bij een mijn of fabriek industriële namen (Heerlen, Geleen), enzovoort. Ruim 600 echte Nederlandse plaatsnamen plus een naamgenerator, ruim 100 straatnamen en Nederlandse voor- en achternamen ("Jan de Vries", "Fleur van den Berg").
 
 GEBRUIK
-1. Zet deze mod aan.
+1. Zet deze mod aan (tip: zoek op "Dutch" in de modlijst).
 2. Start een NIEUW spel en zet bij Names (namen) de namenset op "Dutch (location-based)". Daardoor krijgen ook straten en inwoners Nederlandse namen. Plaatsnamen past de mod hoe dan ook aan.
 3. Optioneel: zet in de modinstellingen "Force this name set" op Yes. Het spel gebruikt dan de Nederlandse namen voor plaatsen, straten en inwoners, wat er ook bij Names staat (experimenteel).
 
