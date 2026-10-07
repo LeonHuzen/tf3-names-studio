@@ -6,7 +6,7 @@ const fs = require('fs'), path = require('path');
 const cfg = C.makeDefaults(window.DEFAULT_DATA);
 cfg.meta.author = 'LeonHuzen';
 cfg.meta.url = 'https://transport-fever.lemon.earth';
-cfg.meta.revision = 3;
+cfg.meta.revision = 4;
 // tags as on mod.io (without 'Localization': the game may treat such mods as language packs and hide them from the new-game mod list; 'Names' does not exist there)
 cfg.meta.tags = 'Town Building, Other Asset, Script Mod';
 const root = path.join(__dirname, '..', 'mod');
