@@ -2,6 +2,8 @@
 
 A small web app that builds a **Transport Fever 3 name-set mod**, plus a ready-made Dutch mod made with it.
 
+**Try it online: https://transport-fever.lemon.earth**
+
 Town names can follow the **location**: coastal towns get coastal names, towns on a river get river names, towns next to a coal mine get mining names, and so on. You decide the names and the rules.
 
 [![Buy me a coffee](https://img.shields.io/badge/%E2%98%95-Buy%20me%20a%20coffee-orange)](https://www.buymeacoffee.com/huuz)
@@ -29,7 +31,7 @@ Town names can follow the **location**: coastal towns get coastal names, towns o
 
 ## Build your own with Names Studio
 
-Open `app/index.html` in a browser (double-click is enough).
+Use the hosted version at https://transport-fever.lemon.earth, or open `app/index.html` in a browser (double-click is enough).
 
 | Tab | What you can do |
 |---|---|

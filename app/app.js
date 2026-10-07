@@ -406,6 +406,7 @@
 		};
 		const zipBtn = btn('Download mod (.zip)', () => {
 			download(C.buildZip(C.buildModFiles(state)), m.modId + '.zip'); toast('Zip downloaded');
+			showThanks(m);
 		}, 'primary');
 
 		const fileInput = h('input', { type: 'file', accept: 'application/json,.json', style: 'display:none', onchange: (e) => {
@@ -445,6 +446,40 @@
 		return root;
 	}
 
+	/* ---------------- Support banner & thank-you dialog ---------------- */
+	const COFFEE_URL = 'https://www.buymeacoffee.com/huuz';
+	const BANNER_KEY = 'names-studio-banner-until', THANKS_KEY = 'names-studio-thanks-off';
+	const store = {
+		get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+		set(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* storage unavailable: just show it again next time */ } },
+	};
+
+	function initBanner() {
+		const banner = document.getElementById('banner');
+		const until = Number(store.get(BANNER_KEY) || 0);
+		banner.hidden = Date.now() < until;
+		document.getElementById('banner-close').addEventListener('click', () => {
+			banner.hidden = true;
+			store.set(BANNER_KEY, String(Date.now() + 30 * 24 * 3600 * 1000)); // stay away for 30 days
+		});
+	}
+
+	function showThanks(m) {
+		if (store.get(THANKS_KEY) === '1') return;
+		const dlg = document.getElementById('thanks');
+		const never = h('input', { type: 'checkbox', id: 'thanks-never' });
+		const close = () => { if (never.checked) store.set(THANKS_KEY, '1'); dlg.close(); };
+		dlg.replaceChildren(
+			h('h3', { id: 'thanks-title' }, 'Your download has started 🎉'),
+			h('p', {}, 'Unzip ', h('code', {}, m.modId), ' into your Transport Fever 3 mods folder (see the install steps below the download button). Enjoy your new names!'),
+			h('p', {}, 'Names Studio is free and made in spare time. If it saved you some effort, a coffee helps keep it going.'),
+			h('div', { class: 'actions' },
+				h('a', { class: 'coffee', href: COFFEE_URL, target: '_blank', rel: 'noopener', onclick: close }, '☕ Buy me a coffee'),
+				btn('Maybe later', close)),
+			h('label', { class: 'never' }, never, 'Don\'t show this again'));
+		if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+	}
+
 	/* ---------------- Navigation ---------------- */
 	const TABS = [['towns', 'Towns', viewThemes], ['rules', 'Rules', viewRules], ['streets', 'Streets', viewStreets], ['people', 'People', viewPeople], ['export', 'Export', viewExport]];
 	let tab = (location.hash || '#towns').slice(1);
@@ -458,6 +493,7 @@
 		view.replaceChildren(TABS.find((t) => t[0] === tab)[2]());
 		window.scrollTo(0, 0);
 	}
+	initBanner();
 	render();
 	document.getElementById('saved').textContent = 'Saved in this browser';
 })();

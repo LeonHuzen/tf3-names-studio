@@ -98,12 +98,31 @@ footer { max-width: 1180px; margin: 0 auto; padding: 0 16px 40px; color: var(--m
 footer a { color: var(--accent); }
 .coffee { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--accent); color: var(--accent-ink) !important; text-decoration: none; font-weight: 600; }
 .coffee:hover { filter: brightness(1.08); }
+#banner { background: var(--accent-soft); color: var(--text); border-bottom: 1px solid var(--border); }
+#banner .in { max-width: 1180px; margin: 0 auto; padding: 8px 16px; display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; font-size: 14px; }
+#banner .in span { flex: 1; min-width: 200px; }
+#banner a.coffee { padding: 4px 12px; }
+#banner button { background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; padding: 2px 8px; border-radius: 6px; cursor: pointer; }
+#banner button:hover { background: var(--surface-2); color: var(--text); }
+dialog { border: 1px solid var(--border); border-radius: 14px; background: var(--surface); color: var(--text); padding: 22px 24px; max-width: 440px; width: calc(100% - 32px); box-shadow: 0 10px 40px rgba(0,0,0,.35); }
+dialog::backdrop { background: rgba(0,0,0,.5); }
+dialog h3 { margin: 0 0 6px; font-size: 18px; }
+dialog p { margin: 0 0 14px; color: var(--muted); }
+dialog .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+dialog .never { margin-top: 14px; font-size: 13px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
 #toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 8px 16px; border-radius: 999px; font-size: 14px; opacity: 0; pointer-events: none; transition: opacity .2s; }
 #toast.show { opacity: 1; }
 @media (prefers-reduced-motion: reduce) { #toast { transition: none; } }
 </style>
 </head>
 <body>
+<div id="banner" hidden>
+	<div class="in">
+		<span>☕ Names Studio is free and open source. If it's useful to you, you can support its development.</span>
+		<a class="coffee" href="https://www.buymeacoffee.com/huuz" target="_blank" rel="noopener">Buy me a coffee</a>
+		<button type="button" id="banner-close" aria-label="Dismiss banner">×</button>
+	</div>
+</div>
 <header>
 	<div class="bar">
 		<div class="brand">Names Studio <small>for Transport Fever 3</small></div>
@@ -116,6 +135,7 @@ footer a { color: var(--accent); }
 	<span>Free &amp; open source (MIT) · <a href="https://github.com/LeonHuzen/tf3-names-studio" target="_blank" rel="noopener">GitHub</a> · Not affiliated with Urban Games</span>
 	<a class="coffee" href="https://www.buymeacoffee.com/huuz" target="_blank" rel="noopener">☕ Buy me a coffee</a>
 </footer>
+<dialog id="thanks" aria-labelledby="thanks-title"></dialog>
 <div id="toast" role="status"></div>
 <script src="defaults.js"></script>
 <script src="core.js"></script>
