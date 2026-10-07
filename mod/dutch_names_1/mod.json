@@ -1,0 +1,19 @@
+{
+    "dependencies": null,
+    "incompatibilities": null,
+    "modId": "dutch_names_1",
+    "options": null,
+    "params": null,
+    "preRunScript": {
+        "fileName": ""
+    },
+    "postRunScript": {
+        "fileName": ""
+    },
+    "runScript": {
+        "fileName": ""
+    },
+    "revision": 1,
+    "severityAdd": "None",
+    "severityRemove": "None"
+}

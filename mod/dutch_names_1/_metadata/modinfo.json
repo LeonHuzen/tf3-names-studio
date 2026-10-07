@@ -1,0 +1,15 @@
+{
+    "authors": [
+        {
+            "name": "LeonHuzen",
+            "role": "CREATOR"
+        }
+    ],
+    "description": "Dutch town, street and person names. At the start of a new game, towns get a name that fits their location.",
+    "name": "Dutch names",
+    "summary": "Dutch town, street and person names, chosen by location.",
+    "tags": [
+        "Script Mod"
+    ],
+    "url": ""
+}
