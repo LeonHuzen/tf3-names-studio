@@ -24,7 +24,7 @@ for x, h in [(1500, 140), (1580, 190), (1660, 120)]:
     d.rectangle([x, 760 - h + 60, x + 36, 780], fill=(10, 16, 30, 255))
 
 d.text((120, 150), "Dutch Names", font=font(190, True), fill=(255, 255, 255))
-d.text((126, 370), "Town names that fit the landscape", font=font(70), fill=(255, 226, 190))
+d.text((126, 370), "Nederlandse namen \u2013 town names that fit the landscape", font=font(62), fill=(255, 226, 190))
 d.text((126, 470), "Coast  ·  River  ·  Lake  ·  Hills  ·  Industry  ·  Farmland", font=font(44), fill=(255, 255, 255, 210))
 
 chips = [("Zandvoort", 120, 600), ("Zaltbommel", 470, 600), ("Valkenburg", 840, 600), ("Geleen", 1210, 600),

@@ -35,9 +35,10 @@
 		return {
 			meta: {
 				modId: 'dutch_names_1',
-				name: 'Dutch names',
+				name: 'Dutch names / Nederlandse namen',
 				setName: 'Dutch (location-based)',
 				author: '',
+				tags: 'Script Mod, Names',
 				url: '',
 				summary: 'Dutch town, street and person names, chosen by location.',
 				coverTagline: 'Town names that fit the landscape',
@@ -699,7 +700,7 @@ return mod
 		files.push({ path: '_metadata/modinfo.json', text: JSON.stringify({
 			authors: [{ name: cfg.meta.author || 'Unknown', role: 'CREATOR' }],
 			description: cfg.meta.description, name: cfg.meta.name, summary: cfg.meta.summary,
-			tags: ['Script Mod'], url: cfg.meta.url || '',
+			tags: (cfg.meta.tags || '').split(',').map((x) => x.trim()).filter(Boolean), url: cfg.meta.url || '',
 		}, null, 4) + '\n' });
 		const ref = (fn) => ({ fileName: id + '::/names/dutch.script@' + fn, params: { modId: id } });
 		files.push({ path: 'content/names/dutch_nl.names.lua', text:

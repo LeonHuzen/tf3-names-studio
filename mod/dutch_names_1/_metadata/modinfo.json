@@ -6,10 +6,11 @@
         }
     ],
     "description": "Dutch town, street and person names. At the start of a new game, towns get a name that fits their location.",
-    "name": "Dutch names",
+    "name": "Dutch names / Nederlandse namen",
     "summary": "Dutch town, street and person names, chosen by location.",
     "tags": [
-        "Script Mod"
+        "Script Mod",
+        "Names"
     ],
     "url": "https://transport-fever.lemon.earth"
 }

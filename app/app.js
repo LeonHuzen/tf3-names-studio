@@ -18,6 +18,8 @@
 		// migrate Dutch default labels saved by an earlier (Dutch) version of the app
 		const OLD = { kust: 'Kust (zee)', rivier: 'Rivier', meer: 'Meer', polder: 'Polder', heuvel: 'Heuvel', bos: 'Bos & heide', industrie: 'Industrie', mijn: 'Mijn & groeve', hout: 'Hout & papier', landbouw: 'Landbouw', stad: 'Grote steden' };
 		const OLDMETA = { name: 'Nederlandse namen', setName: 'Nederlands (locatiegebonden)', summary: 'Nederlandse stads-, straat- en persoonsnamen, gekozen op locatie.', description: 'Nederlandse plaats-, straat- en persoonsnamen. Steden krijgen bij een nieuw spel een naam die past bij hun locatie.' };
+		if (s.meta.name === 'Dutch names') s.meta.name = base.meta.name; // earlier default
+		if (!saved.meta || saved.meta.tags === undefined) s.meta.tags = base.meta.tags;
 		Object.keys(OLDMETA).forEach((k) => { if (s.meta[k] === OLDMETA[k]) s.meta[k] = base.meta[k]; });
 		(saved.themes || []).forEach((t) => { const b = base.themes.find((x) => x.id === t.id); if (b && OLD[t.id] === t.label) { t.label = b.label; t.desc = b.desc; } });
 		s.themes = (saved.themes || base.themes).map((t) => Object.assign({ enabled: true, mode: 'both', prefixChance: 0.25, curated: [], stems: [], suffixes: [], desc: '' }, t));
@@ -425,6 +427,7 @@
 					field('Mod name (max. 32 characters)', text(m, 'name', { maxlength: 60, after: refresh })),
 					field('Name of the name set in the game', text(m, 'setName')),
 					field('Author', text(m, 'author')),
+					field('Tags (comma-separated)', text(m, 'tags'), 'Written to modinfo.json. On the Mod Hub you also tick the official mod.io tags under My Mods.'),
 					field('Website URL (shown in the mod\'s info)', text(m, 'url'), 'Optional. Where players can find this tool or download page.'),
 					field('Summary (max. 100 characters)', text(m, 'summary', { after: refresh })),
 					field('Description', h('textarea', { rows: 3, oninput: (e) => { m.description = e.target.value; save(); } }, m.description)),
