@@ -23,7 +23,7 @@
 		if (!saved.meta || saved.meta.tags === undefined) s.meta.tags = base.meta.tags;
 		Object.keys(OLDMETA).forEach((k) => { if (s.meta[k] === OLDMETA[k]) s.meta[k] = base.meta[k]; });
 		(saved.themes || []).forEach((t) => { const b = base.themes.find((x) => x.id === t.id); if (b && OLD[t.id] === t.label) { t.label = b.label; t.desc = b.desc; } });
-		s.themes = (saved.themes || base.themes).map((t) => Object.assign({ enabled: true, mode: 'both', prefixChance: 0.25, curated: [], stems: [], suffixes: [], desc: '' }, t));
+		s.themes = (saved.themes || base.themes).map((t) => Object.assign({ enabled: true, mode: 'both', prefixChance: 0.25, separator: '', curated: [], stems: [], suffixes: [], desc: '' }, t));
 		return s;
 	}
 
@@ -112,6 +112,7 @@
 				method: st.method, source, order: st.order,
 				stems: cfg.getStems && cfg.getStems(), suffixes: cfg.getSuffixes && cfg.getSuffixes(),
 				prefixes: cfg.getPrefixes && cfg.getPrefixes(), prefixChance: cfg.prefixChance && cfg.prefixChance(),
+				separator: cfg.separator && cfg.separator(),
 				minLen: cfg.minLen, maxLen: cfg.maxLen,
 			});
 			if (!names.length) return toast('Could not invent new names (add more stems/suffixes).');
@@ -206,13 +207,18 @@
 								.map(([v, l]) => h('option', { value: v, selected: t.mode === v }, l)))),
 						field('Prefix chance (Oud-, Nieuw- …): ' + Math.round(t.prefixChance * 100) + '%',
 							h('input', { type: 'range', min: 0, max: 100, value: Math.round(t.prefixChance * 100),
-								oninput: (e) => { t.prefixChance = e.target.value / 100; save(); e.target.parentElement.firstChild.textContent = 'Prefix chance (Oud-, Nieuw- …): ' + e.target.value + '%'; } }))),
+								oninput: (e) => { t.prefixChance = e.target.value / 100; save(); e.target.parentElement.firstChild.textContent = 'Prefix chance (Oud-, Nieuw- …): ' + e.target.value + '%'; } })),
+						field('Separator between stem and suffix',
+							h('select', { onchange: (e) => { t.separator = e.target.value; save(); sample(); } },
+								[['', 'None (joined)'], [' ', 'Space']].map(([v, l]) => h('option', { value: v, selected: t.separator === v }, l))),
+							'Use a space to keep stem and suffix separate (e.g. "Via Roma" instead of "ViaRoma").')),
 					h('div', { class: 'row' }, h('strong', { class: 'muted' }, 'Preview:'), btn('Again', sample, 'small')), sampleBox),
 				h('div', { class: 'card' }, listEditor(t, 'curated', {
 					title: 'Town names in this theme', hint: 'One name per line. These are used first.', rows: 10, after: renderSide,
 					invent: {
 						methods: [['markov', 'Markov (sounds like your list)'], ['stemsuffix', 'Stem + suffix'], ['mix', 'Mix of both']],
 						getStems: () => t.stems, getSuffixes: () => t.suffixes, getPrefixes: () => state.prefixes, prefixChance: () => t.prefixChance,
+						separator: () => t.separator,
 						minLen: 6, maxLen: 22, order: 3,
 					},
 				})),
@@ -344,7 +350,8 @@
 		const s = state.streets, root = h('div', {});
 		const sampleBox = h('div', { class: 'chips' });
 		const sample = () => {
-			const gen = () => (s.stems.length && s.suffixes.length) ? C.pick(s.stems) + C.pick(s.suffixes) : C.pick(s.curated);
+			const sep = s.separator || '';
+			const gen = () => (s.stems.length && s.suffixes.length) ? C.pick(s.stems) + sep + C.pick(s.suffixes) : C.pick(s.curated);
 			const items = new Set(); let g = 0;
 			while (items.size < 12 && g++ < 200) items.add(Math.random() < 0.5 && s.curated.length ? C.pick(s.curated) : gen());
 			sampleBox.replaceChildren(...[...items].map((n) => h('span', { class: 'chip' }, n)));
@@ -354,12 +361,18 @@
 			h('p', { class: 'lead' }, 'The game passes no location for street names, so these are not location-based. The game mixes your list with extra generated names (stem + suffix).'),
 			h('div', { class: 'card' }, listEditor(s, 'curated', {
 				title: 'Street names', rows: 12, unit: 'streets',
-				invent: { methods: [['stemsuffix', 'Stem + suffix'], ['markov', 'Markov (sounds like your list)'], ['mix', 'Mix']], getStems: () => s.stems, getSuffixes: () => s.suffixes, minLen: 7, maxLen: 30, order: 3 },
+				invent: { methods: [['stemsuffix', 'Stem + suffix'], ['markov', 'Markov (sounds like your list)'], ['mix', 'Mix']], getStems: () => s.stems, getSuffixes: () => s.suffixes, separator: () => s.separator, minLen: 7, maxLen: 30, order: 3 },
 			})),
 			h('div', { class: 'cols' },
 				h('div', { class: 'card' }, listEditor(s, 'stems', { title: 'Stems', unit: 'stems', rows: 6, hint: 'Kerk, Molen, Beuken …' })),
 				h('div', { class: 'card' }, listEditor(s, 'suffixes', { title: 'Suffixes', unit: 'suffixes', rows: 6, hint: 'straat, laan, weg …' }))),
-			h('div', { class: 'card' }, field('Extra generated streets in the mod', num(s, 'extra', { min: 0, max: 5000, step: 50 }), 'The game picks from your list plus this many invented names. 0 = your list only.'),
+			h('div', { class: 'card' },
+				h('div', { class: 'cols' },
+					field('Extra generated streets in the mod', num(s, 'extra', { min: 0, max: 5000, step: 50 }), 'The game picks from your list plus this many invented names. 0 = your list only.'),
+					field('Separator between stem and suffix',
+						h('select', { onchange: (e) => { s.separator = e.target.value; save(); sample(); } },
+							[['', 'None (joined)'], [' ', 'Space']].map(([v, l]) => h('option', { value: v, selected: s.separator === v }, l))),
+						'Use a space to keep stem and suffix separate (e.g. "Via Roma" instead of "ViaRoma").')),
 				h('div', { class: 'row' }, h('strong', { class: 'muted' }, 'Preview:'), btn('Again', sample, 'small')), sampleBox));
 		return root;
 	}

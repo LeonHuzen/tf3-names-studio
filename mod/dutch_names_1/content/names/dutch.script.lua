@@ -49,16 +49,17 @@ return {
 		if math.random(50) == 1 then print("[dutch_names] streetsFn called, num = " .. tostring(params.num)) end
 		local d = loadData(captureParams)
 		local pool, set = {}, {}
+		local sep = d.cfg.streetSeparator or ""
 		for _, n in ipairs(d.streets) do pool[#pool + 1] = n; set[n] = true end
 		if #d.streetStems > 0 and #d.streetSuffixes > 0 then
 			for _ = 1, d.cfg.streetExtra do
-				local n = d.pick(d.streetStems) .. d.pick(d.streetSuffixes)
+				local n = d.pick(d.streetStems) .. sep .. d.pick(d.streetSuffixes)
 				if not set[n] then set[n] = true; pool[#pool + 1] = n end
 			end
 		end
 		return take(pool, params.num, d, function()
 			if #d.streetStems == 0 or #d.streetSuffixes == 0 then return d.pick(d.streets) end
-			return d.pick(d.streetStems) .. d.pick(d.streetSuffixes)
+			return d.pick(d.streetStems) .. sep .. d.pick(d.streetSuffixes)
 		end)
 	end,
 

@@ -159,6 +159,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["rivier"] = {
 			["stems"] = {
@@ -173,6 +174,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["heuvel"] = {
 			["stems"] = {
@@ -186,6 +188,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["industrie"] = {
 			["stems"] = {
@@ -199,6 +202,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["hout"] = {
 			["stems"] = {
@@ -211,6 +215,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["meer"] = {
 			["stems"] = {
@@ -224,12 +229,14 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["stad"] = {
 			["stems"] = {},
 			["suffixes"] = {},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["landbouw"] = {
 			["stems"] = {
@@ -243,6 +250,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["mijn"] = {
 			["stems"] = {
@@ -255,6 +263,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["bos"] = {
 			["stems"] = {
@@ -268,6 +277,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 		["polder"] = {
 			["stems"] = {
@@ -281,6 +291,7 @@ local data_cfg = {
 			},
 			["prefixChance"] = 0.25,
 			["mode"] = "both",
+			["separator"] = "",
 		},
 	},
 	prefixes = {
@@ -374,6 +385,7 @@ local data_cfg = {
 	},
 	cfg = {
 		["streetExtra"] = 400,
+		["streetSeparator"] = "",
 		["lastNameFirst"] = false,
 	},
 	fallback = "kust",
@@ -395,7 +407,7 @@ function M.shuffled(t)
 	return s
 end
 
--- Generates a name in a theme: stem + suffix, sometimes with a prefix.
+-- Generates a name in a theme: stem + separator + suffix, sometimes with a prefix.
 function M.generate(theme)
 	local g = M.gen[theme] or M.gen[M.fallback]
 	if not g or #g.stems == 0 or #g.suffixes == 0 then return nil end
@@ -404,7 +416,8 @@ function M.generate(theme)
 		if stem:lower() ~= suffix then break end
 		suffix = M.pick(g.suffixes)
 	end
-	local name = stem .. suffix
+	local sep = g.separator or ""
+	local name = stem .. sep .. suffix
 	if #M.prefixes > 0 and math.random() < g.prefixChance then
 		name = M.pick(M.prefixes) .. name
 	end
