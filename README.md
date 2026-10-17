@@ -35,9 +35,9 @@ Use the hosted version at https://transport-fever.lemon.earth, or open `app/inde
 
 | Tab | What you can do |
 |---|---|
-| **Towns** | Create themes (coast, river, industry …) with their own name list, stems and suffixes. **Invent new names** with a Markov model trained on your own list, or by gluing stems and suffixes together. Click names to reject them. |
+| **Towns** | Create themes (coast, river, industry …) with their own name list, stems and suffixes. **Invent new names** with a Markov model trained on your own list, or by gluing stems and suffixes together. Click names to reject them. Set a **separator** (e.g. a space) between stem and suffix for languages like Italian where names are multi-word (e.g. "Via Roma" instead of "ViaRoma"). |
 | **Rules** | Decide when each theme is used: order of rules, distances, how wide water must be to count as sea / lake / river, which industry types map to which theme, weighted picks for flat countryside, a chance of a random theme. Includes a **test panel** to try imaginary towns. |
-| **Streets / People** | Your own street names and first/last names, with generators. |
+| **Streets / People** | Your own street names and first/last names, with generators. Streets also support a **separator** between stem and suffix. |
 | **Export** | Validation, **download as .zip**, save/load your config as JSON, install command. |
 
 Settings are saved automatically in your browser.
@@ -84,6 +84,7 @@ Rules: only upload content you have the rights to, it must be free, and follow t
 node tools/build_mod.js                  # regenerate mod/dutch_names_1 from the app defaults
 python3 tools/make_cover.py cover.png    # regenerate the Mod Hub cover (needs Pillow)
 lua5.4 tools/test_mod.lua mod/dutch_names_1   # offline smoke test with a mocked game API
+node tools/test_separator.js             # test the stem/suffix separator feature
 ```
 
 ## Host Names Studio yourself (Docker / Coolify)
